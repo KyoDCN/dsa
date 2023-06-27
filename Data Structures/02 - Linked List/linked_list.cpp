@@ -236,6 +236,7 @@ Node* LinkedList::reverse_list(Node* prev) {
 
 // External Functions
 
+// Iterative Form
 Node* merge_sort(Node* node) {
     if(node->next == NULL) return node;
 
@@ -287,6 +288,7 @@ Node* merge_sort(Node* node) {
     if(result1) {
         merged->next = result1;
     }
+    
     if(result2) {
         merged->next = result2;
     }
@@ -294,7 +296,8 @@ Node* merge_sort(Node* node) {
     return merged_head;
 }
 
-Node* merge_sort_recursion(Node* l, Node* r) {
+// Recursive Form
+Node* merge_sort2(Node* l, Node* r) {
     if(l == NULL) {
         return r;
     }
@@ -306,10 +309,10 @@ Node* merge_sort_recursion(Node* l, Node* r) {
     Node* curr;
     if(l->data < r->data) {
         curr = l;
-        curr->next = merge_sort_recursion(l->next, r);
+        curr->next = merge_sort2(l->next, r);
     } else {
         curr = r;
-        curr->next = merge_sort_recursion(l, r->next);
+        curr->next = merge_sort2(l, r->next);
     }
 
     return curr;
@@ -335,7 +338,7 @@ Node* merge_sort2(Node* node) {
     Node* r1 = merge_sort2(h1);
     Node* r2 = merge_sort2(h2);
 
-    return merge_sort_recursion(r1, r2);
+    return merge_sort2(r1, r2);
 }
 
 int main() {

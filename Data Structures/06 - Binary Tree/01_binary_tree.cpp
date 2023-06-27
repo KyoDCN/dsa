@@ -24,6 +24,8 @@ public:
 class BinaryTree {
     Node* root;
 
+    Node* createTreePreOrder(int preorder_start, int preorder_end, int inorder_start, int inorder_end, vector<int> preorder, vector<int> inorder);
+    Node* createTreePostOrder(int postorder_start, int postorder_end, int inorder_start, int inorder_end, vector<int> postorder, vector<int> inorder);
     Node* find(Node* curr, const int& key);
 
     int minValue(Node* curr);
@@ -33,6 +35,7 @@ class BinaryTree {
     pair<int, int> maxDiameter(Node* curr);
     bool isSymmetric(Node* left, Node* right);
 
+    void printInorderTraversal(Node* curr);
     void printPreTraversal(Node* curr);
     void printPostTraversal(Node* curr);
 public:
@@ -46,6 +49,8 @@ public:
     }
 
     void createTree();
+    void createTreePreOrder(vector<int> preorder, vector<int> inorder);
+    void createTreePostOrder(vector<int> postorder, vector<int> inorder);
     void deleteTree();
     Node* find(const int& key);
 
@@ -58,6 +63,7 @@ public:
 
     void print();
     void printLevelOrder();
+    void printInorderTraversal();
     void printPreTraversal();
     void printPostTraversal();
 };
@@ -95,6 +101,78 @@ void BinaryTree::createTree() {
 
         cout << endl;
     }
+}
+
+void BinaryTree::createTreePreOrder(vector<int> preorder, vector<int> inorder) { 
+    this->root = createTreePreOrder(0, preorder.size()-1, 0, inorder.size()-1, preorder, inorder);
+}
+
+Node* BinaryTree::createTreePreOrder(int preorder_start, int preorder_end, int inorder_start, int inorder_end, vector<int> preorder, vector<int> inorder) {
+    if(preorder_start > preorder_end) return NULL;
+    
+    int inorder_root_index;
+    int preorder_root_index = preorder_start;
+
+    for(int i=inorder_start; i<inorder.size(); i++) {
+        if(inorder[i] == preorder[preorder_root_index]) {
+            inorder_root_index = i;
+            break;
+        }
+    }
+
+    // [--Left--][Root][--Right--]
+    int l_inorder_start = inorder_start;
+    int l_inorder_end = inorder_root_index - 1;
+    int r_inorder_start = inorder_root_index + 1;
+    int r_inorder_end = inorder_end;
+
+    // [Root][--Left--][--Right--]
+    int l_preorder_start = preorder_root_index + 1;
+    int l_preorder_end = (l_inorder_end - l_inorder_start) + l_preorder_start;
+    int r_preorder_start = l_preorder_end + 1;
+    int r_preorder_end = preorder_end;
+
+    Node* root = new Node(preorder[preorder_root_index]);
+    root->left = createTreePreOrder(l_preorder_start, l_preorder_end, l_inorder_start, l_inorder_end, preorder, inorder);
+    root->right = createTreePreOrder(r_preorder_start, r_preorder_end, r_inorder_start, r_inorder_end, preorder, inorder);
+
+    return root;
+}
+
+void BinaryTree::createTreePostOrder(vector<int> postorder, vector<int> inorder) {
+    this->root = createTreePostOrder(0, postorder.size()-1, 0, inorder.size()-1, postorder, inorder);
+}
+
+Node* BinaryTree::createTreePostOrder(int postorder_start, int postorder_end, int inorder_start, int inorder_end, vector<int> postorder, vector<int> inorder) {
+    if(postorder_start > postorder_end) return NULL;
+
+    int inorder_root_index;
+    int postorder_root_index = postorder_end;
+
+    for(int i=0; i<inorder.size(); i++) {
+        if(inorder[i] == postorder[postorder_root_index]) {
+            inorder_root_index = i;
+            break;
+        }
+    }
+
+    // [--Left--][Root][--Right--]
+    int l_inorder_start = inorder_start;
+    int l_inorder_end = inorder_root_index - 1;
+    int r_inorder_start = inorder_root_index + 1;
+    int r_inorder_end = inorder_end;
+
+    // [--Left--][--Right--][Root]
+    int l_postorder_start = postorder_start;
+    int l_postorder_end = (l_inorder_end - l_inorder_start) + l_postorder_start;
+    int r_postorder_start = l_postorder_end + 1;
+    int r_postorder_end = postorder_root_index - 1;
+
+    Node* root = new Node(postorder[postorder_root_index]);
+    root->left = createTreePostOrder(l_postorder_start, l_postorder_end, l_inorder_start, l_inorder_end, postorder, inorder);
+    root->right = createTreePostOrder(r_postorder_start, r_postorder_end, r_inorder_start, r_inorder_end, postorder, inorder);
+
+    return root;
 }
 
 void BinaryTree::deleteTree() {
@@ -251,6 +329,20 @@ void BinaryTree::printLevelOrder() {
     cout << endl;
 }
 
+void BinaryTree::printInorderTraversal() {
+    cout << "Inorder Traversal: ";
+    printInorderTraversal(this->root);
+    cout << endl;
+}
+
+void BinaryTree::printInorderTraversal(Node* curr) {
+    if(curr == NULL) return;
+
+    printInorderTraversal(curr->left);
+    cout << curr->data << " ";
+    printInorderTraversal(curr->right);
+}
+
 void BinaryTree::printPreTraversal() {
     if(this->root == NULL) return;
     cout << "Pre-Traversal: ";
@@ -288,14 +380,22 @@ void BinaryTree::printPostTraversal(Node* curr) {
 
 int main() {
     BinaryTree bt;
-    bt.createTree();
+
+    // vector<int> inorder{9,3,15,20,7}; // LDR
+    // vector<int> preorder{3,9,20,15,7}; // DLR
+    // bt.createTreePreOrder(preorder, inorder);
+
+    // vector<int> inorder{9,3,15,20,7}; // LDR
+    // vector<int> postorder{9,15,7,20,3}; // LRD
+    // bt.createTreePostOrder(postorder, inorder);
+
     bt.print();
     bt.printLevelOrder();
+    bt.printInorderTraversal();
     bt.printPreTraversal();
     bt.printPostTraversal();
+
     cout << "Is Symmetric? " << boolalpha << bt.isSymmetric() << endl;
-    Node* n = bt.find(6);
-    cout << (n != NULL ? to_string(n->data) : "Not Found") << endl;
     cout << "Tree Size: " << bt.size() << endl;
     cout << "Leaf Node Count: " << bt.leafNodeCount() << endl;
     cout << "Min Value: " << bt.minValue() << endl;

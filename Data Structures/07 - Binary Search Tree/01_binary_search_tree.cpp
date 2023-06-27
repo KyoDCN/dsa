@@ -217,15 +217,19 @@ pair<Node*, Node*> BinarySearchTree::toLinkedList(Node* curr) {
         p.first = curr;
         p.second = curr;
     } else if (curr->left == NULL) {
-        // attach curr as the new head node
+        // Retrieve the tail
         p = toLinkedList(curr->right);
+        
+        // Attach curr as the new head node
         curr->right = p.first;
         p.first = curr;
     } else if (curr->right == NULL) {
-        // attach curr as the new tail node
+        // Retrieve the head
         p = toLinkedList(curr->left);
+
+        // Attach curr as the new tail node
         p.second->right = curr;
-        curr->left = NULL;
+        curr->left = NULL; // Disconnect left node
         p.second = curr;
     } else {
         // the current node bridges the connection betwee two separate linked list
@@ -235,7 +239,7 @@ pair<Node*, Node*> BinarySearchTree::toLinkedList(Node* curr) {
 
         p.first = p_left.first;
         p_left.second->right = curr;
-        curr->left = NULL;
+        curr->left = NULL; // Disconnect left node
         curr->right = p_right.first;
         p.second = p_right.second;
     }
