@@ -3,6 +3,21 @@
 
 using namespace std;
 
+/*
+    QUICK SORT
+
+    First, determine the pivot. This can either be the start or end index, or even middle index.
+
+    Next, iterate both the start and end indexers until the value of start indexer is less than the pivot 
+    and the value of end indexer is greater than the pivot. Swap the two values. Continue until the start 
+    and end indexers cross each other.
+
+    Once the iterators cross, swap the end or start value with the pivot value. 
+    This start or end index is now the new pivot index.
+
+    Repeat with respect to the new pivot index. 
+*/
+
 void quick_sort(vector<int>& a, int s, int e) {
     if(s >= e) return;
 

@@ -3,6 +3,13 @@
 
 using namespace std;
 
+/*
+    Binary Search that deals with rotated array.
+    This is useful where we do deletions and insertions of O(1),
+    where deletion and insertion is simply moving indexers instead of
+    physically altering the value in the array
+*/
+
 int binary_search(int key, vector<int> a, int s, int e) {
     if(s > e) return -1;
 
@@ -10,16 +17,16 @@ int binary_search(int key, vector<int> a, int s, int e) {
 
     if(key == a[m]) return m;
 
-    if(a[s] <= a[m]) { // Check if start is less than mid
+    if(a[s] <= a[m]) { // Check if start index is less than mid index
         if(a[s] <= key && key <= a[m]) { // Check if Key is between start and mid
             return binary_search(key, a, s, m-1);
-        } else {
+        } else { // Mid to End is rotated around
             return binary_search(key, a, m+1, e);
         }
-    } else if (a[m] <= a[e]) { // Check if mid is less than end
+    } else if (a[m] <= a[e]) { // Check if end index is greater than mid index
         if(a[m] <= key && key <= a[e]) { //  Check if key is between mid and end
             return binary_search(key, a, m+1, e);
-        } else {
+        } else { // Start to mid is rotated around
             return binary_search(key, a, s, m-1);
         }
     }

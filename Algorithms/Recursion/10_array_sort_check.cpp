@@ -6,7 +6,7 @@ using namespace std;
 bool isSorted(vector<int> a, int i) {
     if(i == 0) return true;
 
-    if(a[i] < a[i-1]) return false;
+    if(a[i-1] > a[i]) return false;
 
     return isSorted(a, i-1);
 }

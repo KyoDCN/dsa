@@ -3,6 +3,15 @@
 
 using namespace std;
 
+/*
+    MERGE SORT
+
+    Split an array into two equal sized arrays.
+    Keep doing this until there is only a single element in a divided array.
+    Now recombine the elements from the two divided arrays,
+    sorting them into a single array.
+*/
+
 vector<int> merge_sort(vector<int> a) {
     if(a.size() == 1) return a;
 
@@ -48,6 +57,7 @@ vector<int> merge_sort(vector<int> a) {
     return result;
 }
 
+/*
 void merge_sort(int a[], int s, int e) {
     if(s == e) return;
 
@@ -64,7 +74,7 @@ void merge_sort(int a[], int s, int e) {
         }
     }
 }
-
+*/
 
 int main() {
     vector<int> a{9,1,8,2,7,3,6,4,5};
@@ -75,14 +85,6 @@ int main() {
     }
 
     cout << endl;
-
-
-    int a2[]{9,1,8,2,7,3,6,4,5};
-    merge_sort(a2,0,9);
-    
-    for(auto x : a2) {
-        cout << x << " ";
-    }
 
     return 0;
 }

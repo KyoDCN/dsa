@@ -3,6 +3,14 @@
 
 using namespace std;
 
+/*
+    SELECTION SORT
+    
+    For each index starting from 0,
+    iterate over the array to find the smallest value.
+    If the smallest value is less than the current i value, swap.
+*/
+
 void selection_sort(vector<int>& a) {
     for(int i=0; i<a.size(); i++) {
         int smaller_index{i};
